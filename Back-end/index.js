@@ -1,32 +1,20 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+dotenv.config({ path: "./config/.env" });
+const connectDatabase = require("./config/DB_config");
 const routes = require("./routes/index");
 const errorMiddleware = require("./middleware/error");
 
-dotenv.config({ path: "./config/.env" });
-
 const app = express();
 
-// Handling Uncaught Exception
-process.on("uncaughtException", (err) => {
-	console.log(`Error: ${err.message}`);
-	console.log(`Shutting down the server due to Uncaught Exception`);
-	process.exit(1);
-});
+// // Handling Uncaught Exception
+// process.on("uncaughtException", (err) => {
+// 	console.log(`Error: ${err.message}`);
+// 	console.log(`Shutting down the server due to Uncaught Exception`);
+// 	process.exit(1);
+// });
 
-
-mongoose
-	.connect(process.env.DB_URL, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	})
-	.then(() => {
-		console.log("DB connected sucessfully!!");
-	})
-	.catch((err) => {
-		console.log("Error in DB connection ", err);
-	});
+connectDatabase();
 
 app.use(express.json());
 app.use(errorMiddleware);
