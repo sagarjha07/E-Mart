@@ -17,8 +17,8 @@ const app = express();
 connectDatabase();
 
 app.use(express.json());
-app.use(errorMiddleware);
 app.use(routes);
+app.use(errorMiddleware);
 
 const server = app.listen(process.env.PORT, () => {
 	console.log(`Server is working on http://localhost:${process.env.PORT}`);
