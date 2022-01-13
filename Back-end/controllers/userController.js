@@ -1,6 +1,6 @@
 const ErrorHandler = require("../utils/errorHandler");
 const errorMiddleware = require("../middleware/error");
-const catchAsyncError = require("../middleware/catchAsync");
+const catchAsyncError = require("../middleware/catchAsyncError");
 const User = require("../models/userModel");
 const generateToken = require("../utils/jwtToken");
 
@@ -33,4 +33,13 @@ module.exports.login = catchAsyncError(async (req, res, next) => {
 	generateToken(user, 200, res);
 });
 
-module.exports.logout = catchAsyncError(async (req, res, next) => {});
+module.exports.logout = catchAsyncError(async (req, res, next) => {
+	res.cookie("token", null, {
+		expires: new Date(Date.now()),
+		httpOnly: true,
+	});
+	return res.status(200).json({
+		success: true,
+		message: "Logged out successfully!!",
+	});
+});

@@ -4,12 +4,15 @@ dotenv.config({ path: "./config/.env" });
 const connectDatabase = require("./config/DB_config");
 const ErrorHandler = require("./utils/errorHandler");
 const errorMiddleware = require("./middleware/error");
+const cookieParser = require("cookie-parser");
 const routes = require("./routes/index");
 
 const app = express();
 connectDatabase();
 
 app.use(express.json());
+app.use(cookieParser());
+
 app.use(routes);
 
 app.all("*", (req, res, next) => {
